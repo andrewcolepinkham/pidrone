@@ -17,7 +17,7 @@ while count < 1000:
     time.sleep(.01)
 
 filename = "bmp180_readings.csv"
-fields = ['Tempurature (degC)', 'Pressure (Pa)', 'Altitude (m)', 'Time']
+fields = ['Temperature (degC)', 'Pressure (Pa)', 'Altitude (m)', 'Time']
 # writing to csv file
 with open(filename, 'w') as csvfile:
     # creating a csv writer object
