@@ -5,11 +5,11 @@ from datetime import datetime
 import csv
 from gps import *
 gpsd = gps(mode=WATCH_ENABLE|WATCH_NEWSTYLE)
+(chip_id, chip_version) = bme280.readBME280ID()
 rows = []
 count = 0
-while count < 500:
+while count < 50:
   tm = datetime.now().time() # time object
-  (chip_id, chip_version) = bme280.readBME280ID()
   temperature,pressure,humidity = bme280.readBME280All()
   gps_data = library_gps.getPositionData(gpsd)
 
@@ -27,12 +27,12 @@ while count < 500:
   print("\n")
   rows.append([count, temperature, pressure, humidity, latitude, longitude, chip_id, chip_version, tm])
   count+=1
-  time.sleep(.1)
+  time.sleep(1)
 
 filename = "multisensor_readings.csv"
 fields = ['ID', 'Temperature (degC)', 'Pressure (Pa)', 'Humidity (%)', 'Latitude (deg)', 'Latitude (deg)', 'BME180 Chip ID', 'BME180 Chip VERSION', 'Time']
 # writing to csv file
-with open(filename, 'w') as csvfile:
+with open(filename, 'a') as csvfile:
     # creating a csv writer object
     csvwriter = csv.writer(csvfile)
 
