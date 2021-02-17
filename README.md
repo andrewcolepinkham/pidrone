@@ -1,10 +1,3 @@
-# pidrone
-
-# This is a repository
-
-#
-# Current Sensor Drivers include: BMP180 (Temperature, Pressure, Altitude)
-
 # PiDrone
 
 PiDrone is a Python repository created by @andrewpinkham for research at Colorado College. We use this driver code to control sensor modules via a Raspberry Pi 4 model B
