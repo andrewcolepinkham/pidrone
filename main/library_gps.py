@@ -3,10 +3,13 @@ import time
 
 # TPV REPORT -----------------
 
+<<<<<<< HEAD
 #return json responce from gps
 def get_gps_report(gps):
     return gpsd.next()
 
+=======
+>>>>>>> f245ad6ecdedc8b9ae6677360719893053ea872f
 # returns GPS position (lon,lat)
 def get_position_data(gps):
     nx = gpsd.next()
