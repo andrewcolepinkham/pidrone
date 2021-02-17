@@ -41,7 +41,7 @@ while True:
     data, 
     tm
   ])
-  if count % 20 == 0 or elapsed_time > seconds:
+  if (count % 20 == 0) or (elapsed_time > seconds):
     with open(backup_name, 'w') as csvfile:
       csvwriter = csv.writer(csvfile)
       csvwriter.writerow(["Quicker Backup Test"])
