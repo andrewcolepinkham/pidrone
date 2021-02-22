@@ -17,11 +17,11 @@ broke = False
 
 with open(output_tpv_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
-  csvwriter.writerow(["Quicker TPV Data Test"])
+  csvwriter.writerow(["TPV Data"])
 
 with open(output_sky_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
-  csvwriter.writerow(["Quicker SKY Data Test"])
+  csvwriter.writerow(["SKY Data"])
 
 try:     
   # Main data collection loop
@@ -44,7 +44,7 @@ try:
     ])
     with open(backup_name, 'w') as csvfile:
       csvwriter = csv.writer(csvfile)
-      csvwriter.writerow(["Quicker Backup Test"])
+      csvwriter.writerow(["Backup Data"])
       csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
       csvwriter.writerows(rows)
       csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
@@ -56,7 +56,7 @@ except KeyboardInterrupt:
   print("Data collection was manually terminated with Ctr+C")
   with open(backup_name, 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
-    csvwriter.writerow(["Quicker Backup Test"])
+    csvwriter.writerow(["Backup Data"])
     csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
     csvwriter.writerows(rows)
     csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
