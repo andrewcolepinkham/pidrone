@@ -5,9 +5,9 @@ import csv
 from gps import *
 
 seconds = 60
-backup_name = "quicker_backup.csv"
-output_tpv_name = "quicker_tpv.csv"
-output_sky_name = "quicker_sky.csv"
+backup_name = "backup.csv"
+output_tpv_name = "tpv.csv"
+output_sky_name = "sky.csv"
 
 rows = []
 count = 0
