@@ -4,7 +4,7 @@ from datetime import datetime
 import csv
 from gps import *
 
-seconds = 100
+seconds = 60
 backup_name = "quicker_backup.csv"
 output_tpv_name = "quicker_tpv.csv"
 output_sky_name = "quicker_sky.csv"
@@ -13,6 +13,7 @@ rows = []
 count = 0
 gpsd = gps(mode=WATCH_ENABLE|WATCH_NEWSTYLE)
 start_time = time.time()
+broke = False
 
 with open(output_tpv_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
@@ -21,37 +22,46 @@ with open(output_tpv_name, 'a') as csvfile:
 with open(output_sky_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
   csvwriter.writerow(["Quicker SKY Data Test"])
-      
-# Main data collection loop
-while True:
-  current_time = time.time()
-  elapsed_time = current_time - start_time
-  tm = datetime.now().time() #Current Time
-  temperature,pressure,humidity = bme280.readBME280All() # Data from TPH sensor
-  data = gpsd.next()
-  print "Data: ", str(data)
-  print("------------------------------")
-  print("\n")
 
-  rows.append([
-    count, 
-    temperature, 
-    pressure, 
-    humidity, 
-    data, 
-    tm
-  ])
-  if count % 20 == 0 or elapsed_time > seconds:
+try:     
+  # Main data collection loop
+  while True:
+    current_time = time.time()
+    elapsed_time = current_time - start_time
+    tm = datetime.now().time() #Current Time
+    temperature,pressure,humidity = bme280.readBME280All() # Data from TPH sensor
+    data = gpsd.next()
+    print "Data: ", str(data)
+    print("------------------------------")
+    print("\n")
+    rows.append([
+      count, 
+      temperature, 
+      pressure, 
+      humidity, 
+      data, 
+      tm
+    ])
     with open(backup_name, 'w') as csvfile:
       csvwriter = csv.writer(csvfile)
       csvwriter.writerow(["Quicker Backup Test"])
       csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
       csvwriter.writerows(rows)
       csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
-  if elapsed_time > seconds:
-    print("Finished iterating in: " + str(int(elapsed_time))  + " seconds")
-    break
-  count+=1
+    if elapsed_time > seconds:
+      print("Finished iterating in: " + str(int(elapsed_time))  + " seconds")
+      break
+    count+=1
+except KeyboardInterrupt:
+  print("Data collection was manually terminated with Ctr+C")
+  with open(backup_name, 'w') as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(["Quicker Backup Test"])
+    csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
+    csvwriter.writerows(rows)
+    csvwriter.writerow(["BACKUP-SESSION", "count: ", count])
+    csvwriter.writerow(["Data collection was manually terminated with Ctr+C"])
+  broke = True
 
 print("Now building data...")
 fields_tpv = ['ID', 'Temperature (degC)', 'Pressure (Pa)', 'Humidity (%)', 
@@ -93,9 +103,13 @@ with open(output_tpv_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
   csvwriter.writerow(fields_tpv)
   csvwriter.writerows(output_tpv)
+  if broke:
+    csvwriter.writerow(["Data collection was manually terminated with Ctr+C"])
 
 with open(output_sky_name, 'a') as csvfile:
   csvwriter = csv.writer(csvfile)
   csvwriter.writerow(fields_sky)
   csvwriter.writerows(output_sky)
+  if broke:
+    csvwriter.writerow(["Data collection was manually terminated with Ctr+C"])
 print("done")
